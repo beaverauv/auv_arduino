@@ -5,9 +5,9 @@ include_directories(${ROS_LIB_DIR})
 # Remove this if using an Arduino without native USB (eg, other than Leonardo)
 #add_definitions(-DUSB_CON)
 
-generate_arduino_firmware(arduino
+generate_arduino_firmware(firmware
   SRCS chatter.cpp ${ROS_LIB_DIR}/time.cpp
   BOARD nano328
-  PORT /dev/ttyUSB.ARD1
+  PORT /dev/ttyUSB.ARD2
 )
 

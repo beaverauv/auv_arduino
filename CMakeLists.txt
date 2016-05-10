@@ -18,10 +18,19 @@ rosserial_generate_ros_lib(
 )
 
 rosserial_configure_client(
-  DIRECTORY firmware
+  DIRECTORY ard1
   TOOLCHAIN_FILE ${ROSSERIAL_ARDUINO_TOOLCHAIN}
 )
 
-rosserial_add_client_target(firmware arduino ALL)
-rosserial_add_client_target(firmware arduino-upload)
+rosserial_configure_client(
+  DIRECTORY ard2     
+  TOOLCHAIN_FILE ${ROSSERIAL_ARDUINO_TOOLCHAIN}
+)
+
+
+
+rosserial_add_client_target(ard1 firmware ALL)
+rosserial_add_client_target(ard1 firmware-upload)
+rosserial_add_client_target(ard2 firmware ALL)
+rosserial_add_client_target(ard2 firmware-upload)
 
