@@ -8,6 +8,6 @@ Main repository for the arduino code
 
 #Runing Rosserial Listener
 
-``rosrun rosserial_python serial_node.py /dev/ttyUSB.ARD1`
+`rosrun rosserial_python serial_node.py /dev/ttyUSB.ARD1`
 
 
