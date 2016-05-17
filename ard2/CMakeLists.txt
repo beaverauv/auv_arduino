@@ -6,7 +6,7 @@ include_directories(${ROS_LIB_DIR})
 #add_definitions(-DUSB_CON)
 
 generate_arduino_firmware(firmware
-  SRCS chatter.cpp ${ROS_LIB_DIR}/time.cpp
+  SRCS firmware.cpp ${ROS_LIB_DIR}/time.cpp
   BOARD nano328
   PORT /dev/ttyUSB.ARD2
 )
