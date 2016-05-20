@@ -1,18 +1,17 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-#define MOTOR_HFL 1
-#define MOTOR_HFR 2
-#define MOTOR_HBL 3
-#define MOTOR_HBR 4
-#define MOTOR_VFL 5
-#define MOTOR_VFR 6
-#define MOTOR_VBL 7
-#define MOTOR_VBR 8
+//H stands for horizontal, F and B stand for front and back respectively,
+//L and R stand for right and left
+#define MOTOR_FL 0
+#define MOTOR_FR 1
+#define MOTOR BL 2
+#define MOTOR_BR 3
 
-
+#define STOP_PWM 1500
+#define MAX_PWM 1900
+#define MIN_PWM 1100
 
 
 
 #endif
-
