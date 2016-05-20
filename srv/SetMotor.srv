@@ -1,0 +1,4 @@
+int8 motor
+int8 perc
+---
+int8 success

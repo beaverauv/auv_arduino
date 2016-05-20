@@ -8,9 +8,24 @@ find_package(catkin REQUIRED COMPONENTS
   rosserial_arduino
   rosserial_client
   std_msgs
+  message_generation
 )
 
-catkin_package()
+add_service_files(FILES
+  SetMotor.srv
+  SetMotorPWM.srv
+)  
+
+generate_messages()
+
+catkin_package(
+  INCLUDE_DIRS include
+#  CATKIN_DEPENDS roscpp std_msgs
+)
+
+include_directories(include
+  ${catkin_INCLUDE_DIRS}
+)
 
 rosserial_generate_ros_lib(
   PACKAGE rosserial_arduino
