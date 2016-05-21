@@ -10,11 +10,6 @@ int MotorPWM[4] = {STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM};
 ros::NodeHandle nh;
 using auv_arduino::SetVertMotor;
 using auv_arduino::SetVertMotorPWM;
-std_msgs::String str_msg;
-ros::Publisher chatter("chatter", &str_msg);
-
-
-
 
 void SetMotorCallback(const SetVertMotor::Request & req, SetVertMotor::Response & res){
   int MotorNum = req.motor;
@@ -34,26 +29,23 @@ void SetMotorCallback(const SetVertMotor::Request & req, SetVertMotor::Response 
   }
   res.success = 1;
 }
-void SetMotorPWMCallback(const SetVertMotorPWM::Request & req, SetVertMotorPWM::Response & res){}
+void SetMotorPWMCallback(const SetVertMotorPWM::Request & req, SetVertMotorPWM::Response & res){
+
+}
 
 ros::ServiceServer<SetVertMotor::Request, SetVertMotor::Response> server("setvertmotor_srv", &SetMotorCallback);
 ros::ServiceServer<SetVertMotorPWM::Request, SetVertMotorPWM::Response> server1("setvertmotorpwm_srv", &SetMotorPWMCallback);
 
-char hello[13] = "hello world!";
 
 void setup()
 {
   nh.initNode();
   nh.advertiseService(server);
   nh.advertiseService(server1);
-  nh.advertise(chatter);
-
 }
 
 void loop()
 {
-  str_msg.data = hello;
-  chatter.publish( &str_msg );
   nh.spinOnce();
   delay(1000);
 }
