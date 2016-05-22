@@ -12,10 +12,10 @@
 #define MAX_PWM 1900
 #define MIN_PWM 1100
 
-#define MOTOR_VFL_PIN 0
-#define MOTOR_VFR_PIN 1
-#define MOTOR_VBL_PIN 2
-#define MOTOR_VBR_PIN 3
+#define MOTOR_VFL_PIN 12
+#define MOTOR_VFR_PIN 11
+#define MOTOR_VBL_PIN 13
+#define MOTOR_VBR_PIN 10
 #define MOTOR_HFL_PIN 6
 #define MOTOR_HFR_PIN 5
 #define MOTOR_HBL_PIN 4
