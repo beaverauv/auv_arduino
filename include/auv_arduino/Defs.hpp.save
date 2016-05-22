@@ -1,0 +1,19 @@
+#ifndef DEFS_H
+#define DEFS_H
+
+#define MOTOR_HFR
+#define MOTOR_HFL
+#define MOTOR_HBR
+#define MOTOR_HBL
+#define MOTOR_#define MOTOR_HFR
+#define MOTOR_HFL
+#define MOTOR_HBR
+#define MOTOR_HBL
+
+#define MOTOR_HFR
+#define MOTOR_HFR
+#define MOTOR_HFR
+#define MOTOR_HFR
+
+
+#endif
