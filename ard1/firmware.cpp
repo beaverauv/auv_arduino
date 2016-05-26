@@ -30,7 +30,7 @@ int validateInputs(int motor, int speed){
   return 1;
 }
 
-void SetMotorCallback(const SeMotor::Request & req, SetMotor::Response & res){
+void SetMotorCallback(const SetMotor::Request & req, SetMotor::Response & res){
   int MotorNum = req.motor;
   int MotorSpeed = req.perc;
   //if given values are out of bounds return -1 for failure
@@ -48,7 +48,7 @@ void SetMotorCallback(const SeMotor::Request & req, SetMotor::Response & res){
   }
   res.success = 1;
 }
-void SetMotorPWMCallback(const SetVertMotorPWM::Request & req, SetVertMotorPWM::Response & res){
+void SetMotorPWMCallback(const SetMotorPWM::Request & req, SetMotorPWM::Response & res){
   int MotorNum = req.motor;
   int MotorSpeed = req.usecs;
 
