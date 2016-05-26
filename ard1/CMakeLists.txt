@@ -8,6 +8,6 @@ include_directories(${ROS_LIB_DIR} ../include)
 generate_arduino_firmware(firmware
   SRCS firmware.cpp ${ROS_LIB_DIR}/time.cpp
   BOARD nano328
-  PORT /dev/ttyUSB.ARD1
+  PORT /dev/ttyUSB0
 )
 

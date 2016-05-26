@@ -3,10 +3,15 @@
 
 //H stands for horizontal, F and B stand for front and back respectively,
 //L and R stand for right and left
-#define MOTOR_FL 0
-#define MOTOR_FR 1
-#define MOTOR_BL 2
-#define MOTOR_BR 3
+#define MOTOR_VFL 1
+#define MOTOR_VFR 2
+#define MOTOR_VBL 3
+#define MOTOR_VBR 4
+#define MOTOR_HFL 5
+#define MOTOR_HFR 6
+#define MOTOR_HBL 7
+#define MOTOR_HBR 8
+
 
 #define STOP_PWM 1500
 #define MAX_PWM 1900

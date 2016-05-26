@@ -12,10 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 add_service_files(FILES
-  SetVertMotor.srv
-  SetVertMotorPWM.srv
-  SetHorizMotor.srv
-  SetHorizMotorPWM.srv
+  SetMotor.srv
+  SetMotorPWM.srv
 )
 
 generate_messages()
@@ -39,14 +37,8 @@ rosserial_configure_client(
   TOOLCHAIN_FILE ${ROSSERIAL_ARDUINO_TOOLCHAIN}
 )
 
-rosserial_configure_client(
-  DIRECTORY ard2
-  TOOLCHAIN_FILE ${ROSSERIAL_ARDUINO_TOOLCHAIN}
-)
 
 
 
 rosserial_add_client_target(ard1 firmware ALL)
 rosserial_add_client_target(ard1 firmware-upload)
-rosserial_add_client_target(ard2 firmware ALL)
-rosserial_add_client_target(ard2 firmware-upload)
