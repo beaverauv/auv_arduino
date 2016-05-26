@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_service_files(FILES
   SetMotor.srv
   SetMotorPWM.srv
+  InitESC.srv
 )
 
 generate_messages()

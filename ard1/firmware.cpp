@@ -3,6 +3,7 @@
 #include <auv_arduino/defs.h>
 #include <auv_arduino/SetMotor.h>
 #include <auv_arduino/SetMotorPWM.h>
+#include <auv_arduino/InitESC.h>
 #include <Arduino.h>
 #include <Servo.h>
 
@@ -22,7 +23,7 @@ Servo motor_HBR;
 ros::NodeHandle nh;
 using auv_arduino::SetMotor;
 using auv_arduino::SetMotorPWM;
-
+using auv_arduino::InitESC;
 int validateInputs(int motor, int speed){
   if (motor > 8 || speed > 100 || speed < -100){
     return 0;
@@ -61,9 +62,21 @@ void SetMotorPWMCallback(const SetMotorPWM::Request & req, SetMotorPWM::Response
   res.success = 1;
 }
 
+void InitESCCallback(const InitESC::Request & req, InitESC::Response & res){
+  motor_VFL.writeMicroseconds(STOP_PWM);
+  motor_VFR.writeMicroseconds(STOP_PWM);
+  motor_VBL.writeMicroseconds(STOP_PWM);
+  motor_VBR.writeMicroseconds(STOP_PWM);
+  motor_HFL.writeMicroseconds(STOP_PWM);
+  motor_HFR.writeMicroseconds(STOP_PWM);
+  motor_HBL.writeMicroseconds(STOP_PWM);
+  motor_HBR.writeMicroseconds(STOP_PWM);
+  delay(1000);
+}
+
 ros::ServiceServer<SetMotor::Request, SetMotor::Response> server("setmotor_srv", &SetMotorCallback);
 ros::ServiceServer<SetMotorPWM::Request, SetMotorPWM::Response> server1("setmotorpwm_srv", &SetMotorPWMCallback);
-
+ros::ServiceServer<InitESC::Request, InitESC::Response> server2("initesc_srv", &InitESCCallback);
 
 void setup()
 {
@@ -93,6 +106,7 @@ void setup()
   nh.initNode();
   nh.advertiseService(server);
   nh.advertiseService(server1);
+  nh.advertiseService(server2);
 }
 
 void loop()
