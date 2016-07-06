@@ -1,0 +1,3 @@
+[submodule "include/BlueRobotics_MS5837_Library"]
+	path = include/BlueRobotics_MS5837_Library
+	url = https://github.com/bluerobotics/BlueRobotics_MS5837_Library

@@ -10,14 +10,14 @@
 
 int MotorPWM[8] = {STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM};
 
-Servo motor_VFL;
-Servo motor_VFR;
-Servo motor_VBL;
-Servo motor_VBR;
 Servo motor_HFL;
 Servo motor_HFR;
 Servo motor_HBL;
 Servo motor_HBR;
+Servo motor_VFL;
+Servo motor_VFR;
+Servo motor_VBL;
+Servo motor_VBR;
 
 
 ros::NodeHandle nh;
@@ -38,6 +38,9 @@ void SetMotorCallback(const SetMotor::Request & req, SetMotor::Response & res){
   if (!validateInputs(MotorNum, MotorSpeed)){
     res.success = -1;
     return;
+  }
+  if (MotorNum == 1){
+  MotorSpeed *= -1;
   }
 
   if (MotorSpeed == 0){
@@ -112,14 +115,14 @@ void setup()
 void loop()
 {
 
-  motor_VFL.writeMicroseconds(MotorPWM[MOTOR_VFL]);
-  motor_VFR.writeMicroseconds(MotorPWM[MOTOR_VFR]);
-  motor_VBL.writeMicroseconds(MotorPWM[MOTOR_VBL]);
-  motor_VBR.writeMicroseconds(MotorPWM[MOTOR_VBR]);
-  motor_HFL.writeMicroseconds(MotorPWM[MOTOR_HFL]);
-  motor_HFR.writeMicroseconds(MotorPWM[MOTOR_HFR]);
-  motor_HBL.writeMicroseconds(MotorPWM[MOTOR_HBL]);
-  motor_HBR.writeMicroseconds(MotorPWM[MOTOR_HBR]);
+  motor_VFL.writeMicroseconds(MotorPWM[MOTOR_VFL-1]);
+  motor_VFR.writeMicroseconds(MotorPWM[MOTOR_VFR-1]);
+  motor_VBL.writeMicroseconds(MotorPWM[MOTOR_VBL-1]);
+  motor_VBR.writeMicroseconds(MotorPWM[MOTOR_VBR-1]);
+  motor_HFL.writeMicroseconds(MotorPWM[MOTOR_HFL-1]);
+  motor_HFR.writeMicroseconds(MotorPWM[MOTOR_HFR-1]);
+  motor_HBL.writeMicroseconds(MotorPWM[MOTOR_HBL-1]);
+  motor_HBR.writeMicroseconds(MotorPWM[MOTOR_HBR-1]);
 
 
   nh.spinOnce();
