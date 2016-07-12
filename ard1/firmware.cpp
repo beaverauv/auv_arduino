@@ -1,11 +1,13 @@
 #include <ros.h>
 #include <std_msgs/String.h>
+#include <std_msgs/Float64.h>
 #include <auv_arduino/defs.h>
 #include <auv_arduino/InitESC.h>
 #include <auv_motor_control/thruster_values.h>
 #include <Arduino.h>
 #include <Servo.h>
-
+#include <Wire.h>
+#include <BlueRobotics_MS5837_Library/MS5837.h>
 
 int MotorPWM[8] = {STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM};
 
@@ -17,7 +19,8 @@ Servo motor_VFL;
 Servo motor_VFR;
 Servo motor_VBL;
 Servo motor_VBR;
-
+std_msgs::Float64 fDepth;
+MS5837 sDepth;
 
 ros::NodeHandle nh;
 using auv_arduino::SetMotor;
@@ -69,7 +72,7 @@ ros::Subscriber<auv_motor_control::thruster_values> sub("thruster_values", &set_
 
 
 ros::ServiceServer<InitESC::Request, InitESC::Response> server2("initesc_srv", &InitESCCallback);
-
+ros::Publisher pDepth("depth", &fDepth);
 void setup()
 {
 
@@ -93,11 +96,16 @@ void setup()
   motor_HBR.writeMicroseconds(STOP_PWM);
 
 
+  Wire.begin();
+  sDepth.init();
+  sDepth.setFluidDensity(997);
+
   //delay(1000);
 
   nh.initNode();
   nh.subscribe(sub);
   nh.advertiseService(server2);
+  nh.advertise(pDepth);
 }
 
 void loop()
@@ -111,8 +119,9 @@ void loop()
   motor_HFR.writeMicroseconds(MotorPWM[MOTOR_HFR-1]);
   motor_HBL.writeMicroseconds(MotorPWM[MOTOR_HBL-1]);
   motor_HBR.writeMicroseconds(MotorPWM[MOTOR_HBR-1]);
-
-
+  sDepth.read();
+  fDepth.data = sDepth.depth();
+  pDepth.publish(&fDepth);
   nh.spinOnce();
 
 }
