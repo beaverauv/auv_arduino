@@ -30,6 +30,15 @@ int validateInputs(int motor, int speed){
   return 1;
 }
 
+int PercentToPWM(int perc){
+  if (perc == 0){
+    return STOP_PWM;
+  } else if (perc > 0){
+    return map(MotorSpeed, 0, 100, 1500, 1900);
+  } else {
+    return map(MotorSpeed, -100, 0, 1100, 1500);
+  }
+}
 
 void InitESCCallback(const InitESC::Request & req, InitESC::Response & res){
   motor_VFL.writeMicroseconds(STOP_PWM);
@@ -44,15 +53,15 @@ void InitESCCallback(const InitESC::Request & req, InitESC::Response & res){
 }
 
 void set_motorscb(const auv_motor_control::thruster_values& thruster_outputs){
-  MotorPWM[MOTOR_HFL-1] = thruster_outputs.thruster_xy_frontLeft;
-  MotorPWM[MOTOR_HFR-1] = thruster_outputs.thruster_xy_frontRight;
-  MotorPWM[MOTOR_HBL-1] = thruster_outputs.thruster_xy_backLeft;
-  MotorPWM[MOTOR_HBR-1] = thruster_outputs.thruster_xy_backRight;
+  MotorPWM[MOTOR_HFL-1] = PercentToPWM(thruster_outputs.thruster_xy_frontLeft);
+  MotorPWM[MOTOR_HFR-1] = PercentToPWM(thruster_outputs.thruster_xy_frontRight);
+  MotorPWM[MOTOR_HBL-1] = PercentToPWM(thruster_outputs.thruster_xy_backLeft);
+  MotorPWM[MOTOR_HBR-1] = PercentToPWM(thruster_outputs.thruster_xy_backRight);
 
-  MotorPWM[MOTOR_VFL-1] = thruster_outputs.thruster_z_frontLeft;
-  MotorPWM[MOTOR_VFR-1] = thruster_outputs.thruster_z_frontRight;
-  MotorPWM[MOTOR_VBL-1] = thruster_outputs.thruster_z_backLeft;
-  MotorPWM[MOTOR_VBR-1] = thruster_outputs.thruster_z_backRight;
+  MotorPWM[MOTOR_VFL-1] = PercentToPWM(thruster_outputs.thruster_z_frontLeft);
+  MotorPWM[MOTOR_VFR-1] = PercentToPWM(thruster_outputs.thruster_z_frontRight);
+  MotorPWM[MOTOR_VBL-1] = PercentToPWM(thruster_outputs.thruster_z_backLeft);
+  MotorPWM[MOTOR_VBR-1] = PercentToPWM(thruster_outputs.thruster_z_backRight);
 
 }
 
