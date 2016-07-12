@@ -1,9 +1,8 @@
 #include <ros.h>
 #include <std_msgs/String.h>
 #include <auv_arduino/defs.h>
-#include <auv_arduino/SetMotor.h>
-#include <auv_arduino/SetMotorPWM.h>
 #include <auv_arduino/InitESC.h>
+#include <auv_motor_control/thruster_values.h>
 #include <Arduino.h>
 #include <Servo.h>
 
@@ -31,39 +30,6 @@ int validateInputs(int motor, int speed){
   return 1;
 }
 
-void SetMotorCallback(const SetMotor::Request & req, SetMotor::Response & res){
-  int MotorNum = req.motor;
-  int MotorSpeed = req.perc;
-  //if given values are out of bounds return -1 for failure
-  if (!validateInputs(MotorNum, MotorSpeed)){
-    res.success = -1;
-    return;
-  }
-  if (MotorNum == 1){
-  MotorSpeed *= -1;
-  }
-
-  if (MotorSpeed == 0){
-    MotorPWM[MotorNum-1] = STOP_PWM;
-  } else if (MotorSpeed > 0){
-    MotorPWM[MotorNum-1] = map(MotorSpeed, 0, 100, 1500, 1900);
-  } else {
-    MotorPWM[MotorNum-1] = map(MotorSpeed, -100, 0, 1100, 1500);
-  }
-  res.success = 1;
-}
-void SetMotorPWMCallback(const SetMotorPWM::Request & req, SetMotorPWM::Response & res){
-  int MotorNum = req.motor;
-  int MotorSpeed = req.usecs;
-
-  if (!validateInputs(MotorNum, MotorSpeed)){
-    res.success = -1;
-    return;
-  }
-
-  MotorPWM[MotorNum-1] = MotorSpeed;
-  res.success = 1;
-}
 
 void InitESCCallback(const InitESC::Request & req, InitESC::Response & res){
   motor_VFL.writeMicroseconds(STOP_PWM);
@@ -77,8 +43,22 @@ void InitESCCallback(const InitESC::Request & req, InitESC::Response & res){
   delay(1000);
 }
 
-ros::ServiceServer<SetMotor::Request, SetMotor::Response> server("setmotor_srv", &SetMotorCallback);
-ros::ServiceServer<SetMotorPWM::Request, SetMotorPWM::Response> server1("setmotorpwm_srv", &SetMotorPWMCallback);
+void set_motorscb(const auv_motor_control::thruster_values& thruster_outputs){
+  MotorPWM[MOTOR_HFL-1] = thruster_outputs.thruster_xy_frontLeft;
+  MotorPWM[MOTOR_HFR-1] = thruster_outputs.thruster_xy_frontRight;
+  MotorPWM[MOTOR_HBL-1] = thruster_outputs.thruster_xy_backLeft;
+  MotorPWM[MOTOR_HBR-1] = thruster_outputs.thruster_xy_backRight;
+
+  MotorPWM[MOTOR_VFL-1] = thruster_outputs.thruster_z_frontLeft;
+  MotorPWM[MOTOR_VFR-1] = thruster_outputs.thruster_z_frontRight;
+  MotorPWM[MOTOR_VBL-1] = thruster_outputs.thruster_z_backLeft;
+  MotorPWM[MOTOR_VBR-1] = thruster_outputs.thruster_z_backRight;
+
+}
+
+ros::Subscriber<auv_motor_control::thruster_values> sub("thruster_values", &set_motorscb );
+
+
 ros::ServiceServer<InitESC::Request, InitESC::Response> server2("initesc_srv", &InitESCCallback);
 
 void setup()
@@ -107,8 +87,7 @@ void setup()
   //delay(1000);
 
   nh.initNode();
-  nh.advertiseService(server);
-  nh.advertiseService(server1);
+  nh.subscribe(sub);
   nh.advertiseService(server2);
 }
 
