@@ -3,7 +3,7 @@
 #include <std_msgs/Float64.h>
 #include <auv_arduino/defs.h>
 #include <auv_arduino/InitESC.h>
-#include <auv_motor_control/thruster_values.h>
+#include <auv_motor_control/thruster_values_int.h>
 #include <Arduino.h>
 #include <Servo.h>
 #include <Wire.h>
@@ -24,8 +24,7 @@ std_msgs::Float64 fDepth;
 MS5837 sDepth;
 std_msgs::String str_msg;
 ros::Publisher chatter("chatter", &str_msg);
-int PercentToPWM(float intperc){
-  int perc = (int)intperc;
+int PercentToPWM(int perc){
   if (perc == 0){
     return STOP_PWM;
   } else if (perc > 0){
@@ -35,7 +34,7 @@ int PercentToPWM(float intperc){
   }
 }
 
-void set_motorscb(const auv_motor_control::thruster_values& thruster_outputs){
+void set_motorscb(const auv_motor_control::thruster_values_int& thruster_outputs){
   MotorPWM[MOTOR_HFL-1] = PercentToPWM(thruster_outputs.thruster_xy_frontLeft);
   MotorPWM[MOTOR_HFR-1] = PercentToPWM(thruster_outputs.thruster_xy_frontRight);
   MotorPWM[MOTOR_HBL-1] = PercentToPWM(thruster_outputs.thruster_xy_backLeft);
@@ -50,7 +49,7 @@ void set_motorscb(const auv_motor_control::thruster_values& thruster_outputs){
 }
 
 
-ros::Subscriber<auv_motor_control::thruster_values> sub("/thruster_values", &set_motorscb);
+ros::Subscriber<auv_motor_control::thruster_values_int> sub("/thruster_values_int", &set_motorscb);
 using auv_arduino::InitESC;
 
 void InitESCCallback(const InitESC::Request & req, InitESC::Response & res){
