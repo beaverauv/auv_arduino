@@ -39,7 +39,6 @@ void set_motorscb(const auv_motor_control::thruster_values_int& thruster_outputs
   MotorPWM[MOTOR_HFR-1] = PercentToPWM(thruster_outputs.thruster_xy_frontRight);
   MotorPWM[MOTOR_HBL-1] = PercentToPWM(thruster_outputs.thruster_xy_backLeft);
   MotorPWM[MOTOR_HBR-1] = PercentToPWM(thruster_outputs.thruster_xy_backRight);
-
   MotorPWM[MOTOR_VFL-1] = PercentToPWM(thruster_outputs.thruster_z_frontLeft);
   MotorPWM[MOTOR_VFR-1] = PercentToPWM(thruster_outputs.thruster_z_frontRight);
   MotorPWM[MOTOR_VBL-1] = PercentToPWM(thruster_outputs.thruster_z_backLeft);

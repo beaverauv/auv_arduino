@@ -16,6 +16,8 @@ add_service_files(FILES
   InitESC.srv
 )
 
+add_message_files(FILES
+)
 generate_messages()
 
 catkin_package(
