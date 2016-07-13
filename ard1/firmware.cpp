@@ -49,7 +49,7 @@ void set_motorscb(const auv_motor_control::thruster_values& thruster_outputs){
 }
 
 
-ros::Subscriber<auv_motor_control::thruster_values> sub("thruster_values", &set_motorscb);
+ros::Subscriber<auv_motor_control::thruster_values> sub("/thruster_values", &set_motorscb);
 using auv_arduino::InitESC;
 
 void InitESCCallback(const InitESC::Request & req, InitESC::Response & res){
@@ -102,11 +102,13 @@ void setup()
   //delay(1000);
 
   nh.initNode();
-  nh.subscribe(sub);
   nh.advertiseService(server2);
   nh.advertise(pDepth);
   nh.advertise(chatter);
+  nh.subscribe(sub);
+
 }
+
 
 void loop()
 {
