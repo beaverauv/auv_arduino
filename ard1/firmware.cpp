@@ -22,8 +22,8 @@ Servo motor_VBL;
 Servo motor_VBR;
 std_msgs::Float64 fDepth;
 MS5837 sDepth;
-auv_motor_control::thruster_values thrust_val;
-ros::Publisher pub("test", &thrust_val);
+std_msgs::String str_msg;
+ros::Publisher chatter("chatter", &str_msg);
 int PercentToPWM(int perc){
   if (perc == 0){
     return STOP_PWM;
@@ -44,8 +44,10 @@ void set_motorscb(const auv_motor_control::thruster_values& thruster_outputs){
   MotorPWM[MOTOR_VFR-1] = PercentToPWM(thruster_outputs.thruster_z_frontRight);
   MotorPWM[MOTOR_VBL-1] = PercentToPWM(thruster_outputs.thruster_z_backLeft);
   MotorPWM[MOTOR_VBR-1] = PercentToPWM(thruster_outputs.thruster_z_backRight);
-  pub.publish(&thruster_outputs);
+  str_msg.data = "it works";
+  chatter.publish(&str_msg);
 }
+
 
 ros::Subscriber<auv_motor_control::thruster_values> sub("thruster_values", &set_motorscb);
 using auv_arduino::InitESC;
@@ -103,7 +105,7 @@ void setup()
   nh.subscribe(sub);
   nh.advertiseService(server2);
   nh.advertise(pDepth);
-  nh.advertise(pub);
+  nh.advertise(chatter);
 }
 
 void loop()
