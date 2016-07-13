@@ -11,6 +11,7 @@
 
 int MotorPWM[8] = {STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM, STOP_PWM};
 
+
 Servo motor_HFL;
 Servo motor_HFR;
 Servo motor_HBL;
@@ -23,15 +24,6 @@ std_msgs::Float64 fDepth;
 MS5837 sDepth;
 auv_motor_control::thruster_values thrust_val;
 ros::Publisher pub("test", &thrust_val);
-ros::Subscriber<auv_motor_control::thruster_values> sub("thruster_values", &set_motorscb);
-
-
-ros::ServiceServer<InitESC::Request, InitESC::Response> server2("initesc_srv", &InitESCCallback);
-ros::Publisher pDepth("depth", &fDepth);
-
-ros::NodeHandle nh;
-using auv_arduino::InitESC;
-
 int PercentToPWM(int perc){
   if (perc == 0){
     return STOP_PWM;
@@ -40,18 +32,6 @@ int PercentToPWM(int perc){
   } else {
     return map(perc, -100, 0, 1100, 1500);
   }
-}
-
-void InitESCCallback(const InitESC::Request & req, InitESC::Response & res){
-  motor_VFL.writeMicroseconds(STOP_PWM);
-  motor_VFR.writeMicroseconds(STOP_PWM);
-  motor_VBL.writeMicroseconds(STOP_PWM);
-  motor_VBR.writeMicroseconds(STOP_PWM);
-  motor_HFL.writeMicroseconds(STOP_PWM);
-  motor_HFR.writeMicroseconds(STOP_PWM);
-  motor_HBL.writeMicroseconds(STOP_PWM);
-  motor_HBR.writeMicroseconds(STOP_PWM);
-  delay(1000);
 }
 
 void set_motorscb(const auv_motor_control::thruster_values& thruster_outputs){
@@ -64,9 +44,31 @@ void set_motorscb(const auv_motor_control::thruster_values& thruster_outputs){
   MotorPWM[MOTOR_VFR-1] = PercentToPWM(thruster_outputs.thruster_z_frontRight);
   MotorPWM[MOTOR_VBL-1] = PercentToPWM(thruster_outputs.thruster_z_backLeft);
   MotorPWM[MOTOR_VBR-1] = PercentToPWM(thruster_outputs.thruster_z_backRight);
- thrust_val = thruster_outputs;
-  pub.publish(thrust_val);
+  pub.publish(&thruster_outputs);
 }
+
+ros::Subscriber<auv_motor_control::thruster_values> sub("thruster_values", &set_motorscb);
+using auv_arduino::InitESC;
+
+void InitESCCallback(const InitESC::Request & req, InitESC::Response & res){
+  motor_VFL.writeMicroseconds(STOP_PWM);
+  motor_VFR.writeMicroseconds(STOP_PWM);
+  motor_VBL.writeMicroseconds(STOP_PWM);
+  motor_VBR.writeMicroseconds(STOP_PWM);
+  motor_HFL.writeMicroseconds(STOP_PWM);
+  motor_HFR.writeMicroseconds(STOP_PWM);
+  motor_HBL.writeMicroseconds(STOP_PWM);
+  motor_HBR.writeMicroseconds(STOP_PWM);
+  delay(1000);
+}
+ros::ServiceServer<InitESC::Request, InitESC::Response> server2("initesc_srv", &InitESCCallback);
+ros::Publisher pDepth("depth", &fDepth);
+
+ros::NodeHandle nh;
+
+
+
+
 
 void setup()
 {
