@@ -23,8 +23,6 @@ std_msgs::Float64 fDepth;
 MS5837 sDepth;
 
 ros::NodeHandle nh;
-using auv_arduino::SetMotor;
-using auv_arduino::SetMotorPWM;
 using auv_arduino::InitESC;
 int validateInputs(int motor, int speed){
   if (motor > 8 || speed > 100 || speed < -100){
@@ -37,9 +35,9 @@ int PercentToPWM(int perc){
   if (perc == 0){
     return STOP_PWM;
   } else if (perc > 0){
-    return map(MotorSpeed, 0, 100, 1500, 1900);
+    return map(perc, 0, 100, 1500, 1900);
   } else {
-    return map(MotorSpeed, -100, 0, 1100, 1500);
+    return map(perc, -100, 0, 1100, 1500);
   }
 }
 

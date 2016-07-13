@@ -9,11 +9,10 @@ find_package(catkin REQUIRED COMPONENTS
   rosserial_client
   std_msgs
   message_generation
+  auv_motor_control
 )
 
 add_service_files(FILES
-  SetMotor.srv
-  SetMotorPWM.srv
   InitESC.srv
 )
 
