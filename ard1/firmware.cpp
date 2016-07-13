@@ -24,7 +24,8 @@ std_msgs::Float64 fDepth;
 MS5837 sDepth;
 std_msgs::String str_msg;
 ros::Publisher chatter("chatter", &str_msg);
-int PercentToPWM(int perc){
+int PercentToPWM(float intperc){
+  int perc = (int)intperc;
   if (perc == 0){
     return STOP_PWM;
   } else if (perc > 0){
