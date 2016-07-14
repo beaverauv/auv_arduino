@@ -121,7 +121,7 @@ void loop()
   motor_HBL.writeMicroseconds(MotorPWM[MOTOR_HBL-1]);
   motor_HBR.writeMicroseconds(MotorPWM[MOTOR_HBR-1]);
   sDepth.read();
-  fDepth.data = sDepth.depth();
+  fDepth.data = -1.0 * sDepth.depth();//Mult by -1 so negative depth is down
   pDepth.publish(&fDepth);
   nh.spinOnce();
 
