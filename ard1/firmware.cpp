@@ -28,9 +28,9 @@ int PercentToPWM(int perc){
   if (perc == 0){
     return STOP_PWM;
   } else if (perc > 0){
-    return map(perc, 0, 100, 1500, 1900);
+    return map(perc, 0, 100, 1525, 1900);
   } else {
-    return map(perc, -100, 0, 1100, 1500);
+    return map(perc, -100, 0, 1100, 1525);
   }
 }
 
