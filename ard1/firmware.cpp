@@ -128,13 +128,13 @@ void loop()
   fDepth.data = -1.0 * sDepth.depth();//Mult by -1 so negative depth is down
   pDepth.publish(&fDepth);
 
-  if (digitalRead(START_IN_PIN) == HIGH){
+  if (digitalRead(START_IN_PIN) == LOW){
     bStart.data = true;
   } else {
     bStart.data = false;
   }
 
-  if (digitalRead(STOP_IN_PIN) == HIGH){
+  if (digitalRead(STOP_IN_PIN) == LOW){
     bStop.data = true;
   } else {
     bStop.data = false;
