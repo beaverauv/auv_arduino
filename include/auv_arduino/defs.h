@@ -26,4 +26,7 @@
 #define MOTOR_VBL_PIN 13
 #define MOTOR_VBR_PIN 10
 
+#define START_IN_PIN 15
+#define STOP_IN_PIN 14
+
 #endif
