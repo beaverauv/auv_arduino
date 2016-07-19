@@ -4,7 +4,7 @@
 #include <std_msgs/Bool.h>
 #include <auv_arduino/defs.h>
 #include <auv_arduino/InitESC.h>
-#include <auv_motor_control/thruster_values_int.h>
+#include <auv_motor_control/thruster_int.h>
 #include <Arduino.h>
 #include <Servo.h>
 #include <Wire.h>
@@ -37,7 +37,7 @@ int PercentToPWM(int perc){
   }
 }
 
-void set_motorscb(const auv_motor_control::thruster_values_int& thruster_outputs){
+void set_motorscb(const auv_motor_control::thruster_int& thruster_outputs){
   MotorPWM[MOTOR_HFL-1] = PercentToPWM(thruster_outputs.thruster_xy_frontLeft);
   MotorPWM[MOTOR_HFR-1] = PercentToPWM(thruster_outputs.thruster_xy_frontRight);
   MotorPWM[MOTOR_HBL-1] = PercentToPWM(thruster_outputs.thruster_xy_backLeft);
@@ -47,11 +47,12 @@ void set_motorscb(const auv_motor_control::thruster_values_int& thruster_outputs
   MotorPWM[MOTOR_VBL-1] = PercentToPWM(thruster_outputs.thruster_z_backLeft);
   MotorPWM[MOTOR_VBR-1] = PercentToPWM(thruster_outputs.thruster_z_backRight);
   str_msg.data = "it works";
-  chatter.publish(&str_msg);
 }
 
 
-ros::Subscriber<auv_motor_control::thruster_values_int> sub("/thruster_values_int", &set_motorscb);
+ros::Subscriber<auv_motor_control::thruster_int> sub("/thruster_values_int", &set_motorscb);
+
+using auv_arduino::InitESC;
 
 void InitESCCallback(const InitESC::Request & req, InitESC::Response & res){
   motor_VFL.writeMicroseconds(STOP_PWM);
@@ -127,6 +128,7 @@ void loop()
   sDepth.read();
   fDepth.data = -1.0 * sDepth.depth();//Mult by -1 so negative depth is down
   pDepth.publish(&fDepth);
+  chatter.publish(&str_msg);
 
   if (digitalRead(START_IN_PIN) == LOW){
     bStart.data = true;
@@ -140,8 +142,8 @@ void loop()
     bStop.data = false;
   }
 
-  pStart.publish();
-  pStop.publish();
+  pStart.publish(&bStart);
+  pStop.publish(&bStop);
 
 
   nh.spinOnce();
