@@ -38,14 +38,14 @@ int PercentToPWM(int perc){
 }
 
 void set_motorscb(const auv_motor_control::thruster_int& thruster_outputs){
-  MotorPWM[MOTOR_HFL-1] = PercentToPWM(thruster_outputs.thruster_xy_frontLeft);
-  MotorPWM[MOTOR_HFR-1] = PercentToPWM(thruster_outputs.thruster_xy_frontRight);
-  MotorPWM[MOTOR_HBL-1] = PercentToPWM(thruster_outputs.thruster_xy_backLeft);
-  MotorPWM[MOTOR_HBR-1] = PercentToPWM(thruster_outputs.thruster_xy_backRight);
-  MotorPWM[MOTOR_VFL-1] = PercentToPWM(thruster_outputs.thruster_z_frontLeft);
-  MotorPWM[MOTOR_VFR-1] = PercentToPWM(thruster_outputs.thruster_z_frontRight);
-  MotorPWM[MOTOR_VBL-1] = PercentToPWM(thruster_outputs.thruster_z_backLeft);
-  MotorPWM[MOTOR_VBR-1] = PercentToPWM(thruster_outputs.thruster_z_backRight);
+  MotorPWM[MOTOR_HFL-1] = PercentToPWM(thruster_outputs.thruster_xy_frontLeft * MOTOR_HFL_OFFSET);
+  MotorPWM[MOTOR_HFR-1] = PercentToPWM(thruster_outputs.thruster_xy_frontRight * MOTOR_HFR_OFFSET);
+  MotorPWM[MOTOR_HBL-1] = PercentToPWM(thruster_outputs.thruster_xy_backLeft * MOTOR_HBL_OFFSET);
+  MotorPWM[MOTOR_HBR-1] = PercentToPWM(thruster_outputs.thruster_xy_backRight * MOTOR_HBR_OFFSET);
+  MotorPWM[MOTOR_VFL-1] = PercentToPWM(thruster_outputs.thruster_z_frontLeft * MOTOR_VFL_OFFSET);
+  MotorPWM[MOTOR_VFR-1] = PercentToPWM(thruster_outputs.thruster_z_frontRight * MOTOR_VFR_OFFSET);
+  MotorPWM[MOTOR_VBL-1] = PercentToPWM(thruster_outputs.thruster_z_backLeft * MOTOR_VBL_OFFSET);
+  MotorPWM[MOTOR_VBR-1] = PercentToPWM(thruster_outputs.thruster_z_backRight * MOTOR_VBR_OFFSET);
   str_msg.data = "it works";
 }
 

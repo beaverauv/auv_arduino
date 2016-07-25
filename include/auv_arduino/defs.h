@@ -19,12 +19,23 @@
 
 #define MOTOR_HFL_PIN 4
 #define MOTOR_HFR_PIN 5
-#define MOTOR_HBL_PIN 12
+#define MOTOR_HBL_PIN 6
 #define MOTOR_HBR_PIN 7
-#define MOTOR_VFL_PIN 6
+#define MOTOR_VFL_PIN 12
 #define MOTOR_VFR_PIN 11
 #define MOTOR_VBL_PIN 13
 #define MOTOR_VBR_PIN 10
+
+#define MOTOR_HFL_OFFSET -1
+#define MOTOR_HFR_OFFSET 1
+#define MOTOR_HBL_OFFSET 1
+#define MOTOR_HBR_OFFSET 1
+#define MOTOR_VFL_OFFSET 1
+#define MOTOR_VFR_OFFSET 1
+#define MOTOR_VBL_OFFSET 1
+#define MOTOR_VBR_OFFSET 1
+
+
 
 #define START_IN_PIN 15
 #define STOP_IN_PIN 14
